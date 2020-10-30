@@ -11,6 +11,8 @@ jobs:
       - run:
           name: Build Docker image prod
           command: |
+            echo $DOCKER_USER
+            echo $DOCKER_PASSWORD
             docker login -u=$DOCKER_USER -p=$DOCKER_PASSWORD
             docker build -t $IMAGE_NAME:latest -f Dockerfile/Dockerfile-prod .
             docker push $IMAGE_NAME:latest
