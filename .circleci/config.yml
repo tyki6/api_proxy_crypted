@@ -11,7 +11,7 @@ jobs:
       - run:
           name: Build Docker image prod
           command: |
-            docker login -u="$DOCKERHUB_USERNAME" -p="$DOCKER_PASSWORD" hub.docker.com
+            docker login -u="$DOCKERHUB_USERNAME" -p="$DOCKER_PASSWORD"
             docker build -t $IMAGE_NAME:latest -f Dockerfile/Dockerfile-prod .
             docker push $IMAGE_NAME:latest
   publish_dev:
