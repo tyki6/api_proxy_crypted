@@ -5,15 +5,15 @@ jobs:
       IMAGE_NAME: matthieubouamama/api_proxy_crypted
     docker:
       - image: circleci/buildpack-deps:stretch
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASSWORD
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: Build Docker image prod
           command: |
-            echo $DOCKER_USER
-            echo $DOCKER_PASSWORD
-            docker login -u=$DOCKER_USER -p=$DOCKER_PASSWORD
             docker build -t $IMAGE_NAME:latest -f Dockerfile/Dockerfile-prod .
             docker push $IMAGE_NAME:latest
   publish_dev:
@@ -21,13 +21,15 @@ jobs:
       IMAGE_NAME: matthieubouamama/api_proxy_crypted
     docker:
       - image: circleci/buildpack-deps:stretch
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASSWORD
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: Build Docker image dev
           command: |
-            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASS
             docker build -t $IMAGE_NAME:dev -f Dockerfile/Dockerfile-dev .
             docker push $IMAGE_NAME:dev
 workflows:
@@ -35,10 +37,12 @@ workflows:
   build-master:
     jobs:
       - publish_dev:
+          context: api_proxy
           filters:
             branches:
               only: master
       - publish_prod:
+          context: api_proxy
           filters:
             branches:
               only: master
