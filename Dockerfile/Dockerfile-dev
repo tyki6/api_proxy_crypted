@@ -4,18 +4,22 @@ RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get clean \
     && apt-get install -y aapt
+
 RUN groupadd -g 1001 app && useradd -r -u 1001 -g app app
 RUN mkdir /home/app && chown 1001 /home/app
 USER 1001
 WORKDIR /home/app
 
+ENV DEBUG "true"
+
 ADD requirements.txt .
 RUN pip install --upgrade pip && pip install --user -r requirements.txt
 
-ADD crypto_ia_proxy crypto_ia_proxy
+ADD api_proxy_crypted api_proxy_crypted
 RUN mkdir /home/app/logs
 ADD manage.py manage.py
 ADD entrypoint.py entrypoint.py
+
 CMD ["python", "entrypoint.py"]
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8080"]
-EXPOSE 8080
+
+EXPOSE $PORT

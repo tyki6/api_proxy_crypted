@@ -10,13 +10,17 @@ RUN mkdir /home/app && chown 1001 /home/app
 USER 1001
 WORKDIR /home/app
 
+ENV DEBUG "false"
+
 ADD requirements.txt .
 RUN pip install --upgrade pip && pip install --user -r requirements.txt
 RUN pip install gunicorn
-ADD crypto_ia_proxy crypto_ia_proxy
+
+ADD api_proxy_crypted api_proxy_crypted
 RUN mkdir /home/app/logs
 ADD manage.py manage.py
 ADD entrypoint.py entrypoint.py
+
 CMD ["python", "entrypoint.py"]
-CMD ["gunicorn", "crypto_ia_proxy.Server.wsgi:application", "--bind", "0.0.0.0:8080"]
-EXPOSE 8080
+
+EXPOSE $PORT

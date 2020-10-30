@@ -1,4 +1,4 @@
-"""crypto_ia_proxy URL Configuration
+"""api_proxy_crypted URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.1/topics/http/urls/
@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from crypto_ia_proxy.View import proxy
+from api_proxy_crypted.View import proxy
 
 urlpatterns = [
     url(r"^(?P<data>.*)$", proxy.redirectToApi, name="test")
