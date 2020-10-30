@@ -1,0 +1,5 @@
+django
+cryptography
+requests
+djangorestframework
+django-cors-headers
