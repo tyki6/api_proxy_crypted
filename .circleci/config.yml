@@ -11,9 +11,16 @@ jobs:
       - run:
           name: Build Docker image prod
           command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              DOCKER_TAG="latest"
+            fi
+
+            if [ -n "${CIRCLE_TAG}" ]; then
+              DOCKER_TAG="$CIRCLE_TAG"
+            fi
             docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-            docker build -t $IMAGE_NAME:latest -f Dockerfile/Dockerfile-prod .54
-            docker push $IMAGE_NAME:latest
+            docker build -t $IMAGE_NAME:$DOCKER_TAG -f Dockerfile/Dockerfile-prod .
+            docker push $IMAGE_NAME:$DOCKER_TAG
   publish_dev:
     environment:
       IMAGE_NAME: matthieubouamama/api_proxy_crypted
@@ -28,20 +35,6 @@ jobs:
             docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
             docker build -t $IMAGE_NAME:dev -f Dockerfile/Dockerfile-dev .
             docker push $IMAGE_NAME:dev
-  publish_tag:
-    environment:
-      IMAGE_NAME: matthieubouamama/api_proxy_crypted
-    docker:
-      - image: circleci/buildpack-deps:stretch
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: Build Docker image tag
-          command: |
-            docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-            docker build -t $IMAGE_NAME:dev -f Dockerfile/Dockerfile-dev .
-            docker push $IMAGE_NAME:$CIRCLE_TAG
 workflows:
   version: 2
   build-master:
@@ -50,14 +43,11 @@ workflows:
           context: api_proxy
           filters:
             branches:
-              only: master
+              only: develop
       - publish_prod:
           context: api_proxy
           filters:
             branches:
               only: master
-      - publish_tag:
-          context: api_proxy
-          filters:
             tags:
               only: /.*/
