@@ -24,9 +24,9 @@ python entrypoint.py
 # Docker
 ```
 # prod mode
-docker run mBouamama/api_proxy_crypted:latest (option param)
+docker run matthieubouamama/api_proxy_crypted:latest (option param)
 # or 
-docker run mBouamama/api_proxy_crypted:dev (option param)
+docker run matthieubouamama/api_proxy_crypted:dev (option param)
 ```
 # How to send requests to API Proxy Encrypted
 
