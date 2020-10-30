@@ -12,9 +12,9 @@ When You have a project with API/FRONT and you send sensitive information via yo
 So you can use this api to send encrypted information and this api will decrypt url + body and send requests to your api.
 
 ## schema 
+![diagram](https://github.com/mBouamama/api_proxy_crypted/blob/master/docs/Diagram.png)
 # Installation
 Api use django python framework 
-![diagram](docs/diagram.png)
 ```
 git clone https://github.com/mBouamama/api_proxy_crypted.git
 cd api_proxy_crypted
